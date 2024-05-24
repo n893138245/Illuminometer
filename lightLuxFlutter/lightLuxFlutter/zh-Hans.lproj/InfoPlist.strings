@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  lightLuxFlutter
+
+  Created by Sansi Mac on 2024/5/23.
+  
+*/
+
+"CFBundleDisplayName" = "三思照度计";
+NSCameraUsageDescription = "是否允许app使用摄像头获取光度值？";

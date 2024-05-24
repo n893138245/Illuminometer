@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  lightLuxFlutter
+
+  Created by Sansi Mac on 2024/5/23.
+  
+*/
+
+// 提示弹框
+"提示" = "Tip";
+"由于不同手机的传感器和获取方法不同，在同一环境下，不同手机可能会显示不同的照度值。本应用无法替代照度计测量仪器，显示数值仅供参考。\n\nICP备案号：沪ICP备16020589号-11A" = "Due to the different sensors and acquisition methods of different mobile phones, different phones may display different illumination values in the same environment. This application cannot replace the illuminometer measuring instrument, and the displayed values are for reference only\n\nICP备案号：沪ICP备16020589号-11A";
+"取消" = "Cancel";
+"查询" = "Query";
+
+// 首页-网格
+"第1次" = "First";
+"第2次" = "Second";
+"差值" = "Difference";
+"变化率" = "Change rate";
+
+// lux值的状态显示
+"阳光直射" = "Direct sunlight";
+"全日光" = "Full sunlight";
+"阴天" = "Cloudy day";
+"晴天日出或日落" = "Sunny day, sunrise or sunset";
+"办公室照明" = "Office lighting";
+"阴天非常暗" = "It is very dark on a cloudy day";
+"公共走廊" = "Public corridors";
+"家庭客厅灯" = "Home living room lights";
+"晴朗夜晚的满月" = "A full moon on a clear night";
+"没有月亮的昏暗夜空" = "The dim night sky without the moon";
