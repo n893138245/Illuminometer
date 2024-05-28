@@ -18,6 +18,7 @@
 		A748AF472BFDEBBD00375014 /* CircularButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748AF462BFDEBBD00375014 /* CircularButton.swift */; };
 		A748AF4A2BFED48700375014 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A748AF482BFED48600375014 /* Localizable.strings */; };
 		A748AF4E2BFEE2DD00375014 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A748AF4C2BFEE2DD00375014 /* InfoPlist.strings */; };
+		A79953D82C05B802006BE334 /* SwitchCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79953D72C05B802006BE334 /* SwitchCameraViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		A748AF4B2BFED65D00375014 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A748AF4D2BFEE2DD00375014 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A748AF4F2BFEE38100375014 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		A79953D72C05B802006BE334 /* SwitchCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCameraViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				A748AF2A2BFC9FBB00375014 /* AppDelegate.swift */,
 				A748AF2C2BFC9FBB00375014 /* SceneDelegate.swift */,
 				A748AF2E2BFC9FBB00375014 /* ViewController.swift */,
+				A79953D72C05B802006BE334 /* SwitchCameraViewController.swift */,
 				A748AF422BFD866900375014 /* GridCollectionViewCell.swift */,
 				A748AF432BFD866900375014 /* GridCollectionViewCell.xib */,
 				A748AF462BFDEBBD00375014 /* CircularButton.swift */,
@@ -161,6 +164,7 @@
 			files = (
 				A748AF2F2BFC9FBB00375014 /* ViewController.swift in Sources */,
 				A748AF472BFDEBBD00375014 /* CircularButton.swift in Sources */,
+				A79953D82C05B802006BE334 /* SwitchCameraViewController.swift in Sources */,
 				A748AF2B2BFC9FBB00375014 /* AppDelegate.swift in Sources */,
 				A748AF2D2BFC9FBB00375014 /* SceneDelegate.swift in Sources */,
 				A748AF442BFD866900375014 /* GridCollectionViewCell.swift in Sources */,

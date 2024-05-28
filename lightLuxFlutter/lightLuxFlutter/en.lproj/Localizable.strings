@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   lightLuxFlutter
 
@@ -11,6 +11,9 @@
 "由于不同手机的传感器和获取方法不同，在同一环境下，不同手机可能会显示不同的照度值。本应用无法替代照度计测量仪器，显示数值仅供参考。\n\nICP备案号：沪ICP备16020589号-11A" = "Due to the different sensors and acquisition methods of different mobile phones, different phones may display different illumination values in the same environment. This application cannot replace the illuminometer measuring instrument, and the displayed values are for reference only\n\nICP备案号：沪ICP备16020589号-11A";
 "取消" = "Cancel";
 "查询" = "Query";
+"选择摄像头" = "Select camera";
+"前置摄像头" = "Front camera";
+"后置摄像头" = "Back Camera";
 
 // 首页-网格
 "第1次" = "First";
@@ -29,3 +32,6 @@
 "家庭客厅灯" = "Home living room lights";
 "晴朗夜晚的满月" = "A full moon on a clear night";
 "没有月亮的昏暗夜空" = "The dim night sky without the moon";
+
+// 其它
+"调试" = "debug";
