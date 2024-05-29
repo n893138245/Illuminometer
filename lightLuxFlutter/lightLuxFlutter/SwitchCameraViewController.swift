@@ -31,11 +31,13 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
         "-"
     ]
     var recordValueBtnClickCount = 1
+    let defaults = UserDefaults.standard // 用于存取前后置摄像头的状态：默认false为“后置摄像头”，true为“前置摄像头”
     
     override func viewDidLoad() {
         super.viewDidLoad()
         illuminometer()
         createUI()
+        getValue()
     }
     
     // MARK: - UI
@@ -135,16 +137,18 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
         return view
     }()
     
-    // MARK: -功能
+    // MARK: -事件功能
     @objc func switchCameraBtnClick() {
         let alert = UIAlertController(title: NSLocalizedString("提示", comment: ""), message: NSLocalizedString("选择摄像头", comment: ""), preferredStyle: .alert)
         let frontCamera = UIAlertAction(title: NSLocalizedString("前置摄像头", comment: ""), style: .default) { [self] action in
             switchCamera(currentCameraPosition: .front)
             switchCameraBtn.setImage(UIImage(named: "frontCamera"), for: .normal)
+            saveValue()
         }
         let backCamera = UIAlertAction(title: NSLocalizedString("后置摄像头", comment: ""), style: .default) { [self] action in
             switchCamera(currentCameraPosition: .back)
             switchCameraBtn.setImage(UIImage(named: "backCamera"), for: .normal)
+            saveValue()
         }
         let cancel = UIAlertAction(title: NSLocalizedString("取消", comment: ""), style: .default, handler: nil)
         alert.addAction(frontCamera)
@@ -188,7 +192,7 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
     }
     
     @objc func debugBtnClick() { // 调试按钮
-        /**/
+        /*
         // 用于调试：当前用于上架app store时，截图预览
         let gridAry4 = 2372
         
@@ -203,9 +207,10 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
         gridAry[7] = String("-62.77%")
         
         collectionView.reloadData()
+         */
     }
     
-    // MARK: -逻辑
+    // MARK: -功能逻辑
     func getEquivalent(luxValue: Int) -> String {
         if (luxValue >= 32000) {
             return NSLocalizedString("阳光直射", comment: "")
@@ -300,6 +305,24 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
         session.commitConfiguration()
     }
     
+    func saveValue() {
+        if (currentCameraPosition == .back) {
+            defaults.set(false, forKey: "cameraStatus") // 存值
+        } else {
+            defaults.set(true, forKey: "cameraStatus") // 存值
+        }
+    }
+    
+    func getValue() {
+        if (defaults.bool(forKey: "cameraStatus") == false) { // 取值
+            switchCameraBtn.setImage(UIImage(named: "backCamera"), for: .normal)
+//            currentCameraPosition = .back
+        } else {
+            switchCameraBtn.setImage(UIImage(named: "frontCamera"), for: .normal)
+//            currentCameraPosition = .front
+        }
+    }
+    
     // MARK: -其它：collectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 8
@@ -336,7 +359,7 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
 //        let channel: FlutterMethodChannel = FlutterMethodChannel(name: "plugin_apple", binaryMessenger: messenger!)
         let newValue: Int = Int(value)
 //        channel.invokeMethod("invoke/lux", arguments: newValue);
-        print("值：", newValue)
+//        print("值：", newValue)
         valueLbl.text = String(newValue)
         valueStateLbl.text = getEquivalent(luxValue: newValue)
         updateBackgroundColor(luxValue: CGFloat(newValue))
@@ -377,13 +400,22 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
         session = AVCaptureSession()
         session.beginConfiguration()
 
-        guard let videoDevice = AVCaptureDevice.default(for: .video) else { return }
+//        guard let videoDevice = AVCaptureDevice.default(for: .video) else { return }
+        
+        /**/
+        let videoDevice: AVCaptureDevice;
+        if (defaults.bool(forKey: "cameraStatus") == false) { // 取值判断
+            videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)!
+        } else {
+            videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)!
+        }
+        
         do {
             let videoInput = try AVCaptureDeviceInput(device: videoDevice)
             if session.canAddInput(videoInput) {
                 session.addInput(videoInput)
                 self.currentInput = videoInput
-                self.currentCameraPosition = videoDevice.position
+                self.currentCameraPosition = videoDevice.position // 问题在这，无法实现“前后摄像头”切换；
             }
         } catch {
             print("Camera selection failed: \(error)")
