@@ -40,6 +40,10 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
         getValue()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        checkCameraIsOn() // 为何在此处调用函数：因在viewDidLoad界面未加载完毕，无法调用弹窗功能。必须得在界面加载完毕后，才能调用窗口。
+    }
+    
     // MARK: - UI
     func createUI() {
         view.addSubview(switchCameraBtn)
@@ -87,7 +91,7 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
     lazy var valueLbl: UILabel = {
         let view = UILabel.init()
         view.frame = CGRect.init(x: 0, y: logoImg.frame.origin.y + logoImg.frame.height + 86, width: kScreenWidth, height: 222)
-        view.text = "31"
+        view.text = "Unknown"
         view.font = UIFont(name: "PingFangSC-UltraLight", size: 400)
         view.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 204/255)
         view.textAlignment = .center
@@ -104,7 +108,7 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
         view.textAlignment = .center
         view.font = UIFont.systemFont(ofSize: 17)
         view.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 165/255)
-        view.text = "没有月亮的昏暗夜空"
+        view.text = "Unknown"
         return view
     }()
     
@@ -133,6 +137,7 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
         view.frame = CGRect(x: moreBtn.frame.origin.x, y: CGRectGetMaxY(moreBtn.frame), width: moreBtn.frame.size.width, height: moreBtn.frame.size.height)
         view.setTitle(NSLocalizedString("调试", comment: ""), for: .normal)
         view.backgroundColor = .red
+        view.tag = 1
         view.addTarget(self, action: #selector(debugBtnClick), for: .touchUpInside)
         return view
     }()
@@ -194,19 +199,19 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
     @objc func debugBtnClick() { // 调试按钮
         /*
         // 用于调试：当前用于上架app store时，截图预览
-        let gridAry4 = 2372
-        
-        let newValue: Int = Int(724)
-        valueLbl.text = String(newValue)
-        valueStateLbl.text = getEquivalent(luxValue: newValue)
-        updateBackgroundColor(luxValue: CGFloat(gridAry4))
-        
-        gridAry[4] = String(gridAry4)
-        gridAry[5] = String(883)
-        gridAry[6] = String(Int(gridAry[5])!-Int(gridAry[4])!)
-        gridAry[7] = String("-62.77%")
-        
-        collectionView.reloadData()
+         print("debugBtnClick - tag: ", sender.tag)
+         sender.tag = sender.tag + 1
+         
+         let newValue: Int = Int(1808)
+         valueLbl.text = String(newValue)
+         valueStateLbl.text = getEquivalent(luxValue: newValue)
+         let gridAry4 = 743
+         updateBackgroundColor(luxValue: CGFloat(gridAry4))
+         gridAry[4] = String(gridAry4)
+         gridAry[5] = String(1852)
+         gridAry[6] = String(Int(gridAry[5])!-Int(gridAry[4])!)
+         gridAry[7] = String(calculatePercentage(part: Double(gridAry[6])!, total: Double(gridAry[4])!))
+         collectionView.reloadData()
          */
     }
     
@@ -320,6 +325,27 @@ class SwitchCameraViewController: UIViewController, ObservableObject, AVCaptureV
         } else {
             switchCameraBtn.setImage(UIImage(named: "frontCamera"), for: .normal)
 //            currentCameraPosition = .front
+        }
+    }
+    
+    func checkCameraIsOn() { // 检查摄像头是否开启?
+        view.backgroundColor = .white // 目的：避免未开启摄像头时，界面为黑暗状态
+        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+//        if (cameraAuthorizationStatus == .denied || cameraAuthorizationStatus == .notDetermined || cameraAuthorizationStatus == .restricted) { // 用户否决、拒绝、尚未作出选择
+        if (cameraAuthorizationStatus == .denied || cameraAuthorizationStatus == .restricted) { // 用户否决、尚未作出选择 // 取消“拒绝”。避免首次进入app时，即使“同意”使用摄像头了，仍然会跳出弹窗问题。
+            let alert = UIAlertController(title: NSLocalizedString("提示", comment: ""), message: NSLocalizedString("摄像头未开启，无法获取照度值，请您在设置中开启它", comment: ""), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("设置", comment: ""), style: .default, handler: { _ in
+                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                    return
+                }
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+                    UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                        print("Settings opened: \(success)")
+                    })
+                }
+            }))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("取消", comment: ""), style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
         }
     }
     
